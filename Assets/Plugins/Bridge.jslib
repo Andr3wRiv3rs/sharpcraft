@@ -1,10 +1,10 @@
 mergeInto(LibraryManager.library, {
 
   wsConnect: function (ip) {
-    Connect(ip);
+    Connect(Pointer_stringify(ip));
   },
   wsSend: function (str) {
-    Send(str);
+    Send(Pointer_stringify(str));
   },
   wsClose: function () {
     Close();
