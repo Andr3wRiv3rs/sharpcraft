@@ -65,7 +65,7 @@ public class wsClient : MonoBehaviour
 
     public void onOpen()
     {
-        wsSend("Hey Meheecan");
+        wsSend("ping");
     }
 
     public void onClose()
@@ -73,7 +73,7 @@ public class wsClient : MonoBehaviour
 
     }
 
-    public void onMessage()
+    public void onMessage(string str)
     {
 
     }
