@@ -19,16 +19,19 @@ public class wsClient : MonoBehaviour
     public platform Platform = platform.WebGL;
 
     WebSocket csws;
+
+    public string ServerAddress;
+
     void Start()
     {
         csws = gameObject.GetComponent<WebSocket>();
     }
 
-    void Connect(string ip)
+    public void Connect(string ip)
     {
         if(Platform == platform.WebGL)
         {
-            wsConnect("ws://189.223.237.64:8080");
+            wsConnect(ServerAddress);
         }
         else if(Platform == platform.Standalone)
         {
@@ -36,7 +39,7 @@ public class wsClient : MonoBehaviour
         }
     }
 
-    void Send(string str)
+    public void Send(string str)
     {
         if (Platform == platform.WebGL)
         {
@@ -48,7 +51,7 @@ public class wsClient : MonoBehaviour
         }
     }
 
-    void Close()
+    public void Close()
     {
         if (Platform == platform.WebGL)
         {
