@@ -35,7 +35,7 @@ public class wsClient : MonoBehaviour
         }
         else if(Platform == platform.Standalone)
         {
-            csws.wsConnect(ip);
+            //csws.wsConnect(ip);
         }
     }
 
@@ -59,7 +59,7 @@ public class wsClient : MonoBehaviour
         }
         else if (Platform == platform.Standalone)
         {
-            csws.wsClose();
+            //csws.wsClose();
         }
     }
 
