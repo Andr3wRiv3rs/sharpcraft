@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 894116244}
   - component: {fileID: 894116243}
   - component: {fileID: 894116245}
+  - component: {fileID: 894116246}
   m_Layer: 0
   m_Name: Setup
   m_TagString: Untagged
@@ -427,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822db8492e4b6ad4497e1fec76951511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Platform: 1
+  Platform: 0
   ServerAddress: ws://shielded-plateau-64817.herokuapp.com/
 --- !u!4 &894116244
 Transform:
@@ -453,6 +454,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3061a2e1e85f3b4baa029c2b5855257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &894116246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894116242}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bad6de8d8db354b8bfc1a79f99dc7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &925472501

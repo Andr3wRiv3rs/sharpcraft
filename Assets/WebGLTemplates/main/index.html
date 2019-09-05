@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>%UNITY_WEB_NAME%</title>
+    <style>
+        * {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        #unityContainer {
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+    <script src="./StreamingAssets/unzip.js"></script>
+</head>
+<body>
+    <div id="unityContainer"></div>
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+    <script>const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");</script>
+</body>
+</html>
