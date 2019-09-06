@@ -60,18 +60,10 @@ public class wsClient : MonoBehaviour
             client.ChooseErrorMethod(onError);
         }
 
-        Connect(ServerAddress);
+        ConnectWS(ServerAddress);
     }
 
-    public void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Send("shit");
-        }
-    }
-
-    public void Connect(string ip)
+    public void ConnectWS(string ip)
     {
         if(Platform == platform.WebGL)
         {
@@ -83,7 +75,7 @@ public class wsClient : MonoBehaviour
         }
     }
 
-    public void Send(string str)
+    public void SendWS(string str)
     {
         if (Platform == platform.WebGL)
         {
@@ -95,7 +87,7 @@ public class wsClient : MonoBehaviour
         }
     }
 
-    public void Close()
+    public void CloseWS()
     {
         if (Platform == platform.WebGL)
         {
@@ -148,5 +140,18 @@ public class wsClient : MonoBehaviour
                 UseCases[i].component.SendMessage(Method);
             }
         }
+    }
+
+    public static void Send(string str)
+    {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().SendWS(str);
+    }
+    public static void Close()
+    {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().CloseWS();
+    }
+    public static void Connect(string ip)
+    {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().ConnectWS(ip);
     }
 }

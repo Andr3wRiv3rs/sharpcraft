@@ -430,12 +430,7 @@ MonoBehaviour:
   Platform: 0
   AutoDetectPlatform: 1
   ServerAddress: ws://shielded-plateau-64817.herokuapp.com/
-  UseCases:
-  - component: {fileID: 0}
-    HASonOpen: 1
-    HASonClose: 1
-    HASonMessage: 1
-    HASonError: 1
+  UseCases: []
 --- !u!4 &894116244
 Transform:
   m_ObjectHideFlags: 0
