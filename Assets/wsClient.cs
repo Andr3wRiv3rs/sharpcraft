@@ -21,6 +21,19 @@ public class wsClient : MonoBehaviour
     public bool AutoDetectPlatform = true;
 
     public string ServerAddress;
+
+    [System.Serializable]
+    public class UseCase
+    {
+        public Component component;
+        public bool HASonOpen;
+        public bool HASonClose;
+        public bool HASonMessage;
+        public bool HASonError;
+    }
+
+    public UseCase[] UseCases;
+
     ClientWS client;
 
     void Start()
@@ -96,21 +109,44 @@ public class wsClient : MonoBehaviour
 
     public void onOpen()
     {
-        Debug.Log("Connected");
+        MakeCalls("onOpen", "");
     }
 
     public void onClose()
     {
-        Debug.Log("Disconnected");
+        MakeCalls("onClose", "");
     }
 
     public void onMessage(string str)
     {
-        Debug.Log(str);
+        MakeCalls("onMessage", str);
     }
 
     public void onError()
     {
+        MakeCalls("onError", "");
+    }
 
+    public void MakeCalls(string Method, string str)
+    {
+        for(int i = 0; i < UseCases.Length; i++)
+        {
+            if(Method == "onOpen" && UseCases[i].HASonOpen)
+            {
+                UseCases[i].component.SendMessage(Method);
+            }
+            if (Method == "onClose" && UseCases[i].HASonClose)
+            {
+                UseCases[i].component.SendMessage(Method);
+            }
+            if (Method == "onMessage" && UseCases[i].HASonMessage)
+            {
+                UseCases[i].component.SendMessage(Method, str);
+            }
+            if (Method == "onError" && UseCases[i].HASonError)
+            {
+                UseCases[i].component.SendMessage(Method);
+            }
+        }
     }
 }
