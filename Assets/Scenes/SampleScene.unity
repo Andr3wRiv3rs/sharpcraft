@@ -427,7 +427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822db8492e4b6ad4497e1fec76951511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Platform: 1
+  Platform: 0
+  AutoDetectPlatform: 1
   ServerAddress: ws://shielded-plateau-64817.herokuapp.com/
 --- !u!4 &894116244
 Transform:

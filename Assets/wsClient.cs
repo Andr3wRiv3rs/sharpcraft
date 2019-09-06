@@ -16,14 +16,27 @@ public class wsClient : MonoBehaviour
     private static extern void wsClose();
 
     public enum platform {WebGL, Standalone}
-
     public platform Platform = platform.WebGL;
+
+    public bool AutoDetectPlatform = true;
 
     public string ServerAddress;
     ClientWS client;
 
     void Start()
     {
+        if (AutoDetectPlatform)
+        {
+            if(Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                Platform = platform.WebGL;
+            }
+            if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+            {
+                Platform = platform.Standalone;
+            }
+        }
+
         if(Platform == platform.Standalone)
         {
             client = new ClientWS();
@@ -84,7 +97,6 @@ public class wsClient : MonoBehaviour
     public void onOpen()
     {
         Debug.Log("Connected");
-        Send("ping");
     }
 
     public void onClose()
