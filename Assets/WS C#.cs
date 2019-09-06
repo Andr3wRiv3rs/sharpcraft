@@ -13,6 +13,9 @@ namespace DysnomiaWebSocketClient
         ClientWebSocket client;
         ArraySegment<byte> buf = new ArraySegment<byte>(new byte[1024]);
 
+
+
+
         public void Connect(string ip)
         {
             Start(ip);
@@ -27,13 +30,16 @@ namespace DysnomiaWebSocketClient
                 await client.ConnectAsync(new Uri(ip), CancellationToken.None);
                 if (client.State == WebSocketState.Open)
                 {
-                    Call_onOpen(EventArgs.Empty);
                     Read();
+                    if (onOpen != null)
+                    {
+                        onOpen();
+                    }
                     t = new Thread(new ThreadStart(ClosingCheck));
                     t.Start();
                 }
             }
-            catch (Exception e) { Call_onError(EventArgs.Empty); }
+            catch (Exception e) { if (onError != null) onError(); }
         }
 
         void ClosingCheck()
@@ -42,12 +48,20 @@ namespace DysnomiaWebSocketClient
             {
                 if (client.State == WebSocketState.Closed)
                 {
+                    if (onClose != null)
+                    {
+                        onClose();
+                    }
                     t.Abort();
                     break;
                 }
 
                 if (client.State == WebSocketState.Aborted)
                 {
+                    if (onClose != null)
+                    {
+                        onClose();
+                    }
                     t.Abort();
                     break;
                 }
@@ -69,66 +83,38 @@ namespace DysnomiaWebSocketClient
         async void Read()
         {
             WebSocketReceiveResult r = await client.ReceiveAsync(buf, CancellationToken.None);
-            Call_onMessage(new wsEventArgs(Encoding.UTF8.GetString(buf.Array, 0, r.Count)));
-            Console.WriteLine(Encoding.UTF8.GetString(buf.Array, 0, r.Count));
+            if (onMessage != null)
+            {
+                onMessage(Encoding.UTF8.GetString(buf.Array, 0, r.Count));
+            }
             Read();
         }
 
         public void Close()
         {
             client.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
-            Console.WriteLine("Connection Closed");
         }
 
-        protected virtual void Call_onOpen(EventArgs e)
+        private Action onOpen;
+        private Action onClose;
+        private Action<string> onMessage;
+        private Action onError;
+
+        public void ChooseOpenMethod(Action T)
         {
-            EventHandler handler = onOpen;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            onOpen = T;
         }
-
-        protected virtual void Call_onClose(EventArgs e)
+        public void ChooseCloseMethod(Action T)
         {
-            EventHandler handler = onOpen;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            onClose = T;
         }
-
-        protected virtual void Call_onError(EventArgs e)
+        public void ChooseMessageMethod(Action<string> T)
         {
-            EventHandler handler = onOpen;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            onMessage = T;
         }
-
-        protected virtual void Call_onMessage(EventArgs e)
+        public void ChooseErrorMethod(Action T)
         {
-            EventHandler handler = onOpen;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        public event EventHandler onOpen;
-        public event EventHandler onClose;
-        public event EventHandler onError;
-        public event EventHandler onMessage;
-    }
-
-    public class wsEventArgs : EventArgs
-    {
-        public string mystring { get; set; }
-
-        public wsEventArgs(string myString)
-        {
-            this.mystring = myString;
+            onError = T;
         }
     }
 }

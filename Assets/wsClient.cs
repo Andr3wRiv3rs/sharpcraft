@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using DysnomiaWebSocketClient;
 
 public class wsClient : MonoBehaviour
 {
@@ -18,13 +19,30 @@ public class wsClient : MonoBehaviour
 
     public platform Platform = platform.WebGL;
 
-    WebSocket csws;
-
     public string ServerAddress;
+    ClientWS client;
 
     void Start()
     {
-        csws = gameObject.GetComponent<WebSocket>();
+        if(Platform == platform.Standalone)
+        {
+            client = new ClientWS();
+
+            client.ChooseOpenMethod(onOpen);
+            client.ChooseCloseMethod(onClose);
+            client.ChooseMessageMethod(onMessage);
+            client.ChooseErrorMethod(onError);
+        }
+
+        Connect(ServerAddress);
+    }
+
+    public void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Send("shit");
+        }
     }
 
     public void Connect(string ip)
@@ -35,7 +53,7 @@ public class wsClient : MonoBehaviour
         }
         else if(Platform == platform.Standalone)
         {
-            //csws.wsConnect(ip);
+            client.Connect(ip);
         }
     }
 
@@ -47,7 +65,7 @@ public class wsClient : MonoBehaviour
         }
         else if (Platform == platform.Standalone)
         {
-            
+            client.Send(str);
         }
     }
 
@@ -59,23 +77,24 @@ public class wsClient : MonoBehaviour
         }
         else if (Platform == platform.Standalone)
         {
-            //csws.wsClose();
+            client.Close();
         }
     }
 
     public void onOpen()
     {
-        wsSend("ping");
+        Debug.Log("Connected");
+        Send("ping");
     }
 
     public void onClose()
     {
-
+        Debug.Log("Disconnected");
     }
 
     public void onMessage(string str)
     {
-
+        Debug.Log(str);
     }
 
     public void onError()
