@@ -59,8 +59,6 @@ public class wsClient : MonoBehaviour
             client.ChooseMessageMethod(onMessage);
             client.ChooseErrorMethod(onError);
         }
-
-        ConnectWS(ServerAddress);
     }
 
     public void ConnectWS(string ip)
