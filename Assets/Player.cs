@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        gameObject.GetComponent<MouseLook>().enabled = true;
-    }
-
     public float ForwardSpeed = 1;
     public float SideSpeed = 1;
     public float BackSpeed = 1;
