@@ -1,5 +1,6 @@
 using UnityEngine;
 using Crypto;
+using System;
 
 class TestCrypto : MonoBehaviour
 {
@@ -12,7 +13,5 @@ class TestCrypto : MonoBehaviour
         Debug.Log(encrypted);
 
         string decrypted = rsa.Decrypt(encrypted);
-
-        Debug.Log(decrypted);
     }
 }
