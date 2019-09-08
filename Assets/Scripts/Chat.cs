@@ -33,11 +33,6 @@ public class Chat : MonoBehaviour
         //make all bubbles darker
     }
 
-    public void SendChat(string Message)
-    {
-        wsClient.Send(Message);
-    }
-
     bool isChat(string str)
     {
         if (wsClient.Split(str)[0] == "MSG")
@@ -76,7 +71,7 @@ public class Chat : MonoBehaviour
     bool FieldSwitch = false;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && !inputField.isFocused)
         {
             if (FieldSwitch)
             {
@@ -87,7 +82,18 @@ public class Chat : MonoBehaviour
             {
                 FieldSwitch = true;
                 ShowInput();
+
+                inputField.Select();
+                inputField.ActivateInputField();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            //wsClient.Send(inputField.text);
+            inputField.text = "";
+            FieldSwitch = false;
+            HideInput();
         }
     }
 }

@@ -157,4 +157,9 @@ public class wsClient : MonoBehaviour
     {
         return str.Split(new char[] { 'γ' });
     }
+
+    public static string AddPrefix(string Prefix, string Body)
+    {
+        return Prefix + "γ" + Body;
+    }
 }
