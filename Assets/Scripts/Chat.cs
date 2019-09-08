@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Chat : MonoBehaviour
 {
-    public wsClient WSCLIENT;
-
     public List<GameObject> Bubbles;
 
     public InputField inputField;
@@ -37,17 +35,12 @@ public class Chat : MonoBehaviour
 
     public void SendChat(string Message)
     {
-        WSCLIENT.SendWS(Message);
-    }
-
-    string[] Split(string str)
-    {
-        return str.Split(new char[] { 'γ' });
+        wsClient.Send(Message);
     }
 
     bool isChat(string str)
     {
-        if (Split(str)[0] == "MSG")
+        if (wsClient.Split(str)[0] == "MSG")
         {
             return true;
         }

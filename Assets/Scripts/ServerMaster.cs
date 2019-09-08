@@ -5,17 +5,35 @@ using UnityEngine.UI;
 
 public class ServerMaster : MonoBehaviour
 {
-    public wsClient WSCLIENT;
     public GameObject Chat;
+
+    public string Playername;
+    public string Password;
+    public string Skinurl;
 
     void Connect(string ip)
     {
-        WSCLIENT.ConnectWS(ip);
+        wsClient.Connect(ip);
     }
 
     public void onOpen()
     {
+        //Send authentication load
+    }
 
+    public void onMessage(string str)
+    {
+        if(wsClient.Split(str)[0] == "AUT")
+        {
+            if(wsClient.Split(str)[1] == "Welcome")
+            {
+                //join the game
+            }
+            else
+            {
+                //encrypt the hash received
+            }
+        }
     }
 
     public void onClose()

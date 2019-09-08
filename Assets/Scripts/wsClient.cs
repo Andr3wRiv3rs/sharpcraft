@@ -152,4 +152,9 @@ public class wsClient : MonoBehaviour
     {
         GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().ConnectWS(ip);
     }
+
+    public static string[] Split(string str)
+    {
+        return str.Split(new char[] { 'γ' });
+    }
 }
