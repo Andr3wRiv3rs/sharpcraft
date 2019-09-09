@@ -4,14 +4,15 @@ using System;
 
 class TestCrypto : MonoBehaviour
 {
-    RSA rsa;
+    ECDSA ecdsa;
     void Start ()
     {
-        rsa = new RSA();
-        string encrypted = rsa.Encrypt("abc");
-
-        Debug.Log(encrypted);
-
-        string decrypted = rsa.Decrypt(encrypted);
+        ecdsa = new ECDSA("abc", "example@gmail.com");
+        Debug.Log(
+            ecdsa.Validate(
+                "hello world",
+                ecdsa.Sign("hello world")
+            )
+        );
     }
 }
