@@ -14,5 +14,7 @@ class TestCrypto : MonoBehaviour
                 ecdsa.Sign("hello world")
             )
         );
+
+        Debug.Log(ecdsa.publicKey);
     }
 }
