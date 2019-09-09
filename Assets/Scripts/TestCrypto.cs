@@ -4,17 +4,20 @@ using System;
 
 class TestCrypto : MonoBehaviour
 {
-    ECDSA ecdsa;
     void Start ()
     {
-        ecdsa = new ECDSA("abc", "example@gmail.com");
+        Signature.Generate("abc", "example@gmail.com");
+        
+        // Signature.Import(string signingKey);
+
         Debug.Log(
-            ecdsa.Validate(
+            Signature.Validate(
                 "hello world",
-                ecdsa.Sign("hello world")
+                Signature.Sign("hello world")
             )
         );
 
-        Debug.Log(ecdsa.publicKey);
+        Debug.Log(Signature.signingKey); // secret
+        Debug.Log(Signature.publicKey); // public
     }
 }

@@ -1,11 +1,8 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using System.Numerics;
 using ECC;
 
 namespace Crypto 
@@ -46,17 +43,16 @@ namespace Crypto
         }
     }
 
-    public class ECDSA 
+    public class Signature
     {
-        private string signingKey;
-        public string publicKey;
-        private Ed25519 ed25519 = new Ed25519();
+        public static string signingKey;
+        public static string publicKey;
 
-        public ECDSA (string key, string salt) 
+        public static void Generate (string passphrase, string salt) 
         {
             signingKey = Convert.ToBase64String(
                 new Rfc2898DeriveBytes(
-                    Encoding.UTF8.GetBytes(key), 
+                    Encoding.UTF8.GetBytes(passphrase), 
                     Encoding.UTF8.GetBytes(salt), 
                     10
                 ).GetBytes(32)
@@ -69,7 +65,18 @@ namespace Crypto
             );
         }
 
-        public string Sign (string message)
+        public static void Import (string key)
+        {
+            signingKey = key;
+
+            publicKey = Convert.ToBase64String(
+                Ed25519.PublicKey(
+                    Encoding.UTF8.GetBytes(signingKey)
+                )
+            );
+        }
+
+        public static string Sign (string message)
         {
             return Convert.ToBase64String(
                 Ed25519.Signature(
@@ -80,7 +87,7 @@ namespace Crypto
             );
         }
 
-        public bool Validate (string message, string signature)
+        public static bool Validate (string message, string signature)
         {
             return Ed25519.CheckValid(
                 Convert.FromBase64String(signature), 
