@@ -9,7 +9,13 @@ public class Chat : MonoBehaviour
 
     public InputField inputField;
 
+    public GameObject BubblePrefab;
+
     public int MessageLimit = 10;
+
+    public float StartingY = 0;
+
+    public float BubbleHeight = 19.8f;
 
     private void Awake()
     {
@@ -60,7 +66,7 @@ public class Chat : MonoBehaviour
 
     public void NewBubble(string str)
     {
-        //add new bubble to list
+        
     }
 
     public void DisplayBubbles()
