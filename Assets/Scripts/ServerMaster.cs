@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ServerMaster : MonoBehaviour
 {
-    public GameObject Chat;
+    public Chat Chat;
 
     public string Playername;
     public string Password;
@@ -25,7 +25,7 @@ public class ServerMaster : MonoBehaviour
     {
         if(wsClient.Split(str)[0] == "AUT")
         {
-            if(wsClient.Split(str)[1] == "Welcome")
+            if(wsClient.Split(str)[1] == "AUT")
             {
                 //join the game
             }
@@ -53,7 +53,29 @@ public class ServerMaster : MonoBehaviour
 
     void ShowChat(bool Fact)
     {
-        Chat.GetComponent<Chat>().HideInput();
-        Chat.SetActive(Fact);
+        Chat.gameObject.GetComponent<Chat>().HideInput();
+        Chat.gameObject.SetActive(Fact);
+    }
+
+    public bool Paused = false;
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Paused)
+            {
+                Paused = true;
+                if (GameObject.FindGameObjectWithTag("InputField").activeInHierarchy)
+                {
+                    Chat.HideInput();
+                }
+
+                //show pause menu
+            }
+            else
+            {
+                Paused = false;
+            }
+        }
     }
 }

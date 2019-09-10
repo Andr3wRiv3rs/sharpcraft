@@ -29,6 +29,7 @@ public class Chat : MonoBehaviour
 
     public void HideInput()
     {
+        inputField.text = "";
         inputField.gameObject.SetActive(false);
         //make all bubbles lighter
     }
@@ -96,10 +97,18 @@ public class Chat : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            //wsClient.Send(inputField.text);
-            inputField.text = "";
-            FieldSwitch = false;
-            HideInput();
+            if(inputField.text != "")
+            {
+                //wsClient.Send(inputField.text);
+                inputField.text = "";
+                FieldSwitch = false;
+                HideInput();
+            }
+            else
+            {
+                FieldSwitch = false;
+                HideInput();
+            }
         }
     }
 }
