@@ -9,11 +9,13 @@ public class Chat : MonoBehaviour
 
     public InputField inputField;
 
+    public GameObject ChatBack;
+
     public GameObject BubblePrefab;
 
     public int MessageLimit = 10;
 
-    public float StartingY = 0;
+    public int LettersPerLine = 10;
 
     public float BubbleHeight = 19.8f;
 
@@ -60,14 +62,30 @@ public class Chat : MonoBehaviour
 
             if (Bubbles.Count > MessageLimit)
             {
-                Bubbles.Remove(Bubbles[Bubbles.Count - 1]);
+                GameObject Removed = Bubbles[Bubbles.Count - 1];
+                //Bubbles.Remove(Bubbles[Bubbles.Count - 1]);
+                Destroy(Removed);
             }
         }
     }
 
     public void NewBubble(string str)
     {
-        
+        GameObject bubble = Instantiate(BubblePrefab);
+        bubble.transform.SetParent(ChatBack.transform);
+        float newHeight = BubbleHeight;// * (str.Length / LettersPerLine);
+
+        bubble.GetComponent<RectTransform>().sizeDelta = new Vector2(ChatBack.GetComponent<RectTransform>().sizeDelta.x, newHeight);
+        bubble.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, bubble.GetComponent<RectTransform>().sizeDelta.y / 2);
+        bubble.transform.GetChild(0).GetComponent<Text>().text = str;
+
+        //move all bubbles up
+        for(int i = 0; i < Bubbles.Count; i++)
+        {
+            Bubbles[i].GetComponent<RectTransform>().anchoredPosition += new Vector2(0, bubble.GetComponent<RectTransform>().sizeDelta.y);
+        }
+
+        Bubbles.Add(bubble);
     }
 
     public void DisplayBubbles()
@@ -100,6 +118,7 @@ public class Chat : MonoBehaviour
             if(inputField.text != "")
             {
                 //wsClient.Send(inputField.text);
+                NewBubble(inputField.text);
                 inputField.text = "";
                 FieldSwitch = false;
                 HideInput();
