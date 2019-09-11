@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float BackSpeed = 1;
     public float SprintingSpeed = 1;
     public float JumpHeight = 1;
+    public bool Frozen = false;
 
     private float Forward_Speed;
     private float Side_Speed;
@@ -44,22 +45,26 @@ public class Player : MonoBehaviour
         Vector3 newPosition = transform.position;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
-        if (Input.GetKey(KeyCode.W))
+        if (!Frozen)
         {
-            newPosition += transform.forward * (Forward_Speed / 50);
+            if (Input.GetKey(KeyCode.W))
+            {
+                newPosition += transform.forward * (Forward_Speed / 50);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                newPosition -= transform.forward * (Back_Speed / 50);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                newPosition += transform.right * (Side_Speed / 50);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                newPosition -= transform.right * (Side_Speed / 50);
+            }
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            newPosition -= transform.forward * (Back_Speed / 50);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            newPosition += transform.right * (Side_Speed / 50);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            newPosition -= transform.right * (Side_Speed / 50);
-        }
+
 
         
 

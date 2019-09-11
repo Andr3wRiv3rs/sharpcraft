@@ -13,6 +13,9 @@ public class Chat : MonoBehaviour
 
     public GameObject BubblePrefab;
 
+    public Color DarkBubbles;
+    public Color LightBubbles;
+
     public int MessageLimit = 10;
 
     public int LettersPerLine = 10;
@@ -31,15 +34,25 @@ public class Chat : MonoBehaviour
 
     public void HideInput()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Frozen = false;
         inputField.text = "";
         inputField.gameObject.SetActive(false);
-        //make all bubbles lighter
+        ColorBubbles(LightBubbles);
     }
 
     public void ShowInput()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Frozen = true;
         inputField.gameObject.SetActive(true);
-        //make all bubbles darker
+        ColorBubbles(DarkBubbles);
+    }
+
+    public void ColorBubbles(Color color)
+    {
+        for(int i = 0; i < Bubbles.Count; i++)
+        {
+            Bubbles[i].gameObject.GetComponent<Image>().color = color;
+        }
     }
 
     bool isChat(string str)
@@ -63,8 +76,8 @@ public class Chat : MonoBehaviour
             if (Bubbles.Count > MessageLimit)
             {
                 GameObject Removed = Bubbles[Bubbles.Count - 1];
-                //Bubbles.Remove(Bubbles[Bubbles.Count - 1]);
-                Destroy(Removed);
+                Bubbles.Remove(Bubbles[Bubbles.Count - 1]);
+                Destroy(Removed.gameObject);
             }
         }
     }
@@ -117,13 +130,21 @@ public class Chat : MonoBehaviour
         {
             if(inputField.text != "")
             {
-                //wsClient.Send(inputField.text);
-                NewBubble(inputField.text);
+                wsClient.Send(inputField.text);
                 inputField.text = "";
                 FieldSwitch = false;
                 HideInput();
             }
             else
+            {
+                FieldSwitch = false;
+                HideInput();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(FieldSwitch == true)
             {
                 FieldSwitch = false;
                 HideInput();
