@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public float BackSpeed = 1;
     public float SprintingSpeed = 1;
     public float JumpHeight = 1;
-    public bool Frozen = false;
+    private bool Frozen = false;
 
     private float Forward_Speed;
     private float Side_Speed;
@@ -26,22 +26,26 @@ public class Player : MonoBehaviour
         Jump_Height = JumpHeight;
     }
 
+    public void LockPlayer()
+    {
+        Frozen = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        gameObject.GetComponent<MouseLook>().enabled = false;
+        Camera.main.gameObject.GetComponent<MouseLook>().enabled = false;
+    }
+
+    public void UnlockPlayer()
+    {
+        Frozen = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        gameObject.GetComponent<MouseLook>().enabled = true;
+        Camera.main.gameObject.GetComponent<MouseLook>().enabled = true;
+    }
+
     private void FixedUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
-            gameObject.transform.GetChild(0).GetComponent<MouseLook>().enabled = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            gameObject.GetComponent<MouseLook>().enabled = false;
-        }
-
         Vector3 newPosition = transform.position;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 

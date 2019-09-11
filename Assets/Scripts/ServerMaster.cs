@@ -33,6 +33,12 @@ public class ServerMaster : MonoBehaviour
         Connecting = true;
     }
 
+    private void Start()
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LockPlayer();
+    }
+
     public void onOpen()
     {
         if (Connecting)
@@ -91,9 +97,15 @@ public class ServerMaster : MonoBehaviour
 
     public void Disconnect()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
         ShowChat(false);
         //tell MobLoader to remove mobs and clear
         //tell ChunkLoader to remove chunks and clear
+    }
+
+    public void LeaveGame()
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
     }
 
     public void RemoveObjectsWithTag(string str)
@@ -106,6 +118,16 @@ public class ServerMaster : MonoBehaviour
 
     public void StartAllSystems()
     {
+
+    }
+
+    public float SpawnWait = 2;
+    public IEnumerator StartRoutine()
+    {
+        yield return new WaitForSeconds(SpawnWait);
+        //waiting
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UnlockPlayer();
         //Start Player script's position updates
     }
 
@@ -149,25 +171,68 @@ public class ServerMaster : MonoBehaviour
         Chat.gameObject.SetActive(Fact);
     }
 
-    public bool Paused = false;
+    public static bool Paused = false;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Paused)
+            //only if the chat isn't open
+            if (Chat.FieldSwitch == false)
             {
-                Paused = true;
-                if (GameObject.FindGameObjectWithTag("InputField").activeInHierarchy)
+                if (ServerMaster.Paused)
                 {
-                    Chat.HideInput();
+                    //Unpause
+                    ServerMaster.Paused = false;
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UnlockPlayer();
                 }
+                else
+                {
+                    //Pause
+                    ServerMaster.Paused = true;
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LockPlayer();
+                }
+            }
+        }
+    }
 
-                //show pause menu
-            }
-            else
-            {
-                Paused = false;
-            }
+
+
+    //Server List
+    public GameObject ServerBox;
+    List<string> ServerList;
+
+    public void AddServer(string ip)
+    {
+        ServerList.Add(ip);
+        int Number = PlayerPrefs.GetInt("ServerCount", 0);
+
+        PlayerPrefs.SetString("SavedServer" + Number.ToString(), ip);
+        PlayerPrefs.SetInt("ServerCount", Number + 1);
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadServers()
+    {
+        ServerList.Clear();
+        int Number = PlayerPrefs.GetInt("ServerCount", 0);
+
+        for(int i = 0; i < Number; i++)
+        {
+            ServerList.Add(PlayerPrefs.GetString("SavedServer" + i.ToString()));
+        }
+    }
+
+    public void CleanServers()
+    {
+
+    }
+
+    public void DisplayServers()
+    {
+        for(int i = 0; i < ServerList.Count; i++)
+        {
+
         }
     }
 }

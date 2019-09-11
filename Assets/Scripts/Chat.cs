@@ -34,7 +34,7 @@ public class Chat : MonoBehaviour
 
     public void HideInput()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Frozen = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UnlockPlayer();
         inputField.text = "";
         inputField.gameObject.SetActive(false);
         ColorBubbles(LightBubbles);
@@ -42,7 +42,7 @@ public class Chat : MonoBehaviour
 
     public void ShowInput()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Frozen = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LockPlayer();
         inputField.gameObject.SetActive(true);
         ColorBubbles(DarkBubbles);
     }
@@ -101,12 +101,7 @@ public class Chat : MonoBehaviour
         Bubbles.Add(bubble);
     }
 
-    public void DisplayBubbles()
-    {
-        //display all bubbles out of Bubbles list
-    }
-
-    bool FieldSwitch = false;
+    public bool FieldSwitch = false;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T) && !inputField.isFocused)
