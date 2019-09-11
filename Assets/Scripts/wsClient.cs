@@ -99,11 +99,13 @@ public class wsClient : MonoBehaviour
 
     public void onOpen()
     {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().isOpen = true;
         MakeCalls("onOpen", "");
     }
 
     public void onClose()
     {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().isOpen = false;
         MakeCalls("onClose", "");
     }
 
@@ -114,6 +116,7 @@ public class wsClient : MonoBehaviour
 
     public void onError()
     {
+        GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().isOpen = false;
         MakeCalls("onError", "");
     }
 
@@ -138,6 +141,13 @@ public class wsClient : MonoBehaviour
                 UseCases[i].component.SendMessage(Method);
             }
         }
+    }
+
+    public bool isOpen = false;
+
+    public static bool isConnected()
+    {
+        return GameObject.FindGameObjectWithTag("Setup").GetComponent<wsClient>().isOpen;
     }
 
     public static void Send(string str)
