@@ -20,8 +20,7 @@ public class ServerMaster : MonoBehaviour
         public string publicKey;
         public string Skinurl;
     }
-
-    bool inGame = false;
+    
     bool Connecting = false;
     void Connect(string ip)
     {
@@ -87,6 +86,7 @@ public class ServerMaster : MonoBehaviour
 
     public void DisconnectPage()
     {
+        ServerMaster.inGame = false;
         Disconnect();
         if(KickMessage != "")
         {
@@ -126,6 +126,7 @@ public class ServerMaster : MonoBehaviour
     {
         yield return new WaitForSeconds(SpawnWait);
         //waiting
+        ServerMaster.inGame = true;
         GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = true;
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UnlockPlayer();
         //Start Player script's position updates
@@ -170,7 +171,8 @@ public class ServerMaster : MonoBehaviour
         Chat.gameObject.GetComponent<Chat>().HideInput();
         Chat.gameObject.SetActive(Fact);
     }
-
+    
+    public static bool inGame = false;
     public static bool Paused = false;
     private void Update()
     {
@@ -183,12 +185,14 @@ public class ServerMaster : MonoBehaviour
                 {
                     //Unpause
                     ServerMaster.Paused = false;
+                    ServerMaster.inGame = true;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UnlockPlayer();
                 }
                 else
                 {
                     //Pause
                     ServerMaster.Paused = true;
+                    ServerMaster.inGame = false;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LockPlayer();
                 }
             }

@@ -104,7 +104,7 @@ public class Chat : MonoBehaviour
     public bool FieldSwitch = false;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T) && !inputField.isFocused)
+        if ((Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Slash)) && !inputField.isFocused && ServerMaster.inGame)
         {
             if (FieldSwitch)
             {
@@ -115,13 +115,16 @@ public class Chat : MonoBehaviour
             {
                 FieldSwitch = true;
                 ShowInput();
-
+                if (Input.GetKeyDown(KeyCode.Slash))
+                {
+                    inputField.text = "/";
+                }
                 inputField.Select();
                 inputField.ActivateInputField();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) && ServerMaster.inGame)
         {
             if(inputField.text != "")
             {
