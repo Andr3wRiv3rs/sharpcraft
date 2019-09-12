@@ -87,6 +87,8 @@ public class ServerMaster : MonoBehaviour
     public void DisconnectPage()
     {
         ServerMaster.inGame = false;
+        GameObject.FindGameObjectWithTag("HUD").SetActive(false);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
         Disconnect();
         if(KickMessage != "")
         {
@@ -105,6 +107,7 @@ public class ServerMaster : MonoBehaviour
 
     public void LeaveGame()
     {
+        GameObject.FindGameObjectWithTag("HUD").SetActive(true);
         GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
     }
 
@@ -118,7 +121,7 @@ public class ServerMaster : MonoBehaviour
 
     public void StartAllSystems()
     {
-
+        GameObject.FindGameObjectWithTag("HUD").SetActive(true);
     }
 
     public float SpawnWait = 2;
