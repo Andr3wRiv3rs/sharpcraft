@@ -82,6 +82,11 @@ public class ServerMaster : MonoBehaviour
         {
             KickMessage = wsClient.Split(str)[1];
         }
+
+        if(wsClient.Split(str)[0] == "PNG")
+        {
+            PingMessage = wsClient.Split(str)[1];
+        }
     }
 
     public void DisconnectPage()
@@ -202,7 +207,55 @@ public class ServerMaster : MonoBehaviour
         }
     }
 
+    public class ServerInfo
+    {
+        public string Name;
+        public string Description;
+        public string ImageURL;
+        public int ping;
+    }
+    
+    private string PingMessage = "";
+    public ServerInfo SendPing()
+    {
+        int gotPing = 0;
+        StartCoroutine(Pinging((ping) => {
+            gotPing = ping;
+        }));
 
+        ServerInfo serverInfo = new ServerInfo();
+        serverInfo.Name = wsClient.Split(PingMessage)[0];
+        serverInfo.Description = wsClient.Split(PingMessage)[1];
+        serverInfo.ImageURL = wsClient.Split(PingMessage)[2];
+        serverInfo.ping = gotPing;
+        PingMessage = "";
+        return serverInfo;
+    }
+
+    public int Timeout = 1000;
+    public IEnumerator Pinging(System.Action<int> callback)
+    {
+        wsClient.Send(wsClient.AddPrefix("PNG", "GET"));
+        int Milliseconds = 0;
+        while (true)
+        {
+            if(PingMessage != "")
+            {
+                callback(Milliseconds);
+                break;
+            }
+            else
+            {
+                if(Milliseconds >= Timeout)
+                {
+                    callback(Milliseconds);
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(0.001f);
+            Milliseconds++;
+        }
+    }
 
     //Server List
     public GameObject ServerBox;
