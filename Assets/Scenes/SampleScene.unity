@@ -1877,7 +1877,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Woop woop fuckitty doo, wtf amagonnado.
+  m_Text: Currently loading information for this server.
 --- !u!222 &670186627
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2615,6 +2615,7 @@ MonoBehaviour:
   Password: 
   Skinurl: 
   SpawnWait: 2
+  Timeout: 1000
   ServerBox: {fileID: 0}
 --- !u!114 &894116246
 MonoBehaviour:
@@ -2939,7 +2940,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title Of The Server
+  m_Text: Loading...
 --- !u!222 &1034878574
 CanvasRenderer:
   m_ObjectHideFlags: 0

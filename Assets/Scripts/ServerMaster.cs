@@ -43,7 +43,12 @@ public class ServerMaster : MonoBehaviour
         if (Connecting)
         {
             Connecting = false;
+            GotConnection = false;
             AttemptLogin();
+        }
+        else
+        {
+            GotConnection = true;
         }
     }
 
@@ -288,11 +293,47 @@ public class ServerMaster : MonoBehaviour
 
     }
 
+    public void RefreshList()
+    {
+        CleanServers();
+        DisplayServers();
+        StartCoroutine(LoadServerInfo());
+    }
+
     public void DisplayServers()
+    {
+        //DisplayServers
+    }
+
+    private bool GotConnection = false;
+    public IEnumerator LoadServerInfo()
     {
         for(int i = 0; i < ServerList.Count; i++)
         {
+            wsClient.Connect(ServerList[i]);
 
+            int Milliseconds = 0;
+            while (Milliseconds < Timeout)
+            {
+                if (GotConnection)
+                {
+                    break;
+                }
+                yield return new WaitForSeconds(0.001f);
+                Milliseconds++;
+            }
+
+            if (GotConnection)
+            {
+                ServerInfo serverInfo = SendPing();
+                wsClient.Close();
+                GotConnection = false;
+            }
+            else
+            {
+                //Timeout
+            }
         }
+        yield return null;
     }
 }
